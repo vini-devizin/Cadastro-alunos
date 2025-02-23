@@ -18,3 +18,7 @@ Implementar isso não foi tão difćil, mas aconteceu algumas coisas, como:
 - Para resolver o problema anterior, eu criei um venv, e tentei, mas deu um erro. Então, eu perguntei pro ChatGpt(Eu tive que usar ele porque eu não consegui entender o traceback) e ele me disse que eu teria que instalar mais dois pacotes(libpq-dev e python3-dev).
 
 Obs: Quando eu avançar mais o projeto, irei fazer um passo a passo de como roda-lo.
+
+Depois de dar o push entre 12:00 e 13:00, eu continuei codando e fui implementar a conexão do banco de dados. Sendo bem sincero, quando eu estava criando um usuário para usar, não estava dando certo porque eu não coloquei ponto e vírgula, e passei muito tempo quebrando cabeça com isso.
+
+No momento que estou escrevendo agora, o commit mais recente é `verification added`.
