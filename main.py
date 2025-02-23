@@ -6,3 +6,4 @@ options: list[str] = [ # The options of user
     'Exibir alunos cadastrados',
     'Sair do sistema'
 ]
+showMenu(options)
