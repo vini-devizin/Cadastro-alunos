@@ -22,3 +22,7 @@ Obs: Quando eu avançar mais o projeto, irei fazer um passo a passo de como roda
 Depois de dar o push entre 12:00 e 13:00, eu continuei codando e fui implementar a conexão do banco de dados. Sendo bem sincero, quando eu estava criando um usuário para usar, não estava dando certo porque eu não coloquei ponto e vírgula, e passei muito tempo quebrando cabeça com isso.
 
 No momento que estou escrevendo agora, o commit mais recente é `verification added`.
+
+# 24/02/2025
+
+Hoje não tive tanto tempo para o projeto, mas só hoje que eu percebi que o .env e o venv estavam disponiveis, ou seja, minhas credenciais do banco de dados ficaram expostas por um dia inteiro🤡, e o venv não é necessário ele no repositório remoto(minha opinião).
