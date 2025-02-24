@@ -1,10 +1,10 @@
 import psycopg2 as ps # Importing psycopg2 for databases manipulation
-from dotenv import load_dotenv # Importing load_dotenv for more security
-import os
+from dotenv import load_dotenv # Importing library load_dotenv for more security
+import os # Importing library os for acess the .env
 
-load_dotenv(dotenv_path='../../.env')
+load_dotenv(dotenv_path='../../.env') # Load the .env in his directory
 
-data = {
+data = { # The credentials of database 
     'name': os.getenv("DB_NAME"),
     'user': os.getenv("DB_USER"),
     'password': os.getenv("DB_PASSWORD"),
@@ -12,10 +12,10 @@ data = {
     'port': os.getenv("DB_PORT")
 }
 
-def connect() -> None:
+def connect():
     """
     -> Connect to the database
-    :return: None
+    :return: The connection with the database
     """
     try:
         con = ps.connect(
@@ -32,7 +32,7 @@ def connect() -> None:
 
 def create_database_if_not_exists() -> None:
     try:
-        con = ps.connect(
+        con = ps.connect( # Connect to postgres database
             dbname="postgres",
             user=data["user"],
             password=data["password"],
@@ -50,8 +50,8 @@ def create_database_if_not_exists() -> None:
             print('\033[0;32mBanco de dados já existente!\033[0m')
         cursor.close()
         con.close()
-    except Exception as e:
-        print('\033[0;31mErro: Falha ao criar banco de dados\033[0m', e)
+    except:
+        print('\033[0;31mErro: Falha ao criar banco de dados\033[0m')
 
 if __name__ == '__main__':
-    create_database_if_not_exists()
+    create_database_if_not_exists() # I used this to debug, but i will remove this
