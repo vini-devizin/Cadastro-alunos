@@ -26,3 +26,9 @@ No momento que estou escrevendo agora, o commit mais recente é `verification ad
 # 24/02/2025
 
 Hoje não tive tanto tempo para o projeto, mas só hoje que eu percebi que o .env e o venv estavam disponiveis, ou seja, minhas credenciais do banco de dados ficaram expostas por um dia inteiro🤡, e o venv não é necessário ele no repositório remoto(minha opinião).
+
+# 28/02/2025
+
+Olá, fiquei 4 dias sem dar atualizações aqui no GitHub porque estava tentando retirar do histórico o .env, que tinha as credenciais do banco de dados, mas o jeito foi deletar o repositório original e criar outro, que no caso, é esse.
+
+Se quiser atualizações do projeto com mais frequência, vai no mem perfil do [TabNews](https://www.tabnews.com.br/ViniciusDaniel404/).
