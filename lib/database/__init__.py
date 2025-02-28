@@ -54,5 +54,6 @@ def create_database_if_not_exists() -> None:
     except:
         print('\033[0;31mErro: Falha ao criar banco de dados\033[0m')
 
+
 if __name__ == '__main__':
     create_database_if_not_exists() # I used this to debug, but i will remove this
