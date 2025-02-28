@@ -1,4 +1,5 @@
 import psycopg2 as ps # Importing psycopg2 for databases manipulation
+from psycopg2 import sql
 from dotenv import load_dotenv # Importing library load_dotenv for more security
 import os # Importing library os for acess the .env
 
@@ -31,7 +32,11 @@ def connect():
     else:
         return con
 
-def create_database_if_not_exists() -> None:
+def create_database() -> None:
+    """
+    -> Create database if not exists.
+    :return: None
+    """
     try:
         con = ps.connect( # Connect to postgres database
             dbname="postgres",
@@ -54,6 +59,30 @@ def create_database_if_not_exists() -> None:
     except:
         print('\033[0;31mErro: Falha ao criar banco de dados\033[0m')
 
+def create_table(name: str) -> None:
+    """
+    -> Create table if not exists
+    :param name: name of the table
+    :return: None
+    """
+    try:
+        con = connect()
+        cursor = con.cursor()
+        query = sql.SQL("""
+        CREATE TABLE IF NOT EXISTS {} (
+        id SERIAL PRIMARY KEY,
+        nome VARCHAR(255) NOT NULL,
+        nasc DATE NOT NULL,
+        cpf VARCHAR(11) NOT NULL UNIQUE
+        ); 
+""").format(sql.Identifier(name)) # I'm using sql.Identifier to protect from sql injection
+        cursor.execute(query)
+        con.commit()
+        cursor.close()
+        con.close()
+        print(f'\033[0;32mTabela criada com sucesso!\033[0m')
+    except:
+        print(f'\033[0;31mERRO: Falha ao criar tabela\033[0m')
 
 if __name__ == '__main__':
-    create_database_if_not_exists() # I used this to debug, but i will remove this
+    create_table('test1') # I using this to debug, but i will remove this
