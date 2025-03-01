@@ -122,5 +122,20 @@ def add_student(name: str, birth: date, cpf: str, table: str) -> None:
         cursor.close()
         con.close()
 
+def remove_student(id: int, table: str) -> None:
+    try:
+        con = connect()
+        cursor = con.cursor()
+        query = f"DELETE from {table} WHERE id = %s"
+        cursor.execute(query, (id, ))
+        con.commit()
+    except:
+        print('\033[0;31mERRO: Falha ao remover aluno!\033[0m')
+    else:
+        print(f'\033[0;32mAluno com id {id} removido com sucesso!\033[0m')
+    finally:
+        cursor.close()
+        con.close()
+
 # if __name__ == '__main__':
     # create_table('test1') # I'm using this to debug, but i will remove this
