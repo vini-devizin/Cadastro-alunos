@@ -31,4 +31,4 @@ Hoje não tive tanto tempo para o projeto, mas só hoje que eu percebi que o .en
 
 Olá, fiquei 4 dias sem dar atualizações aqui no GitHub porque estava tentando retirar do histórico o .env, que tinha as credenciais do banco de dados, mas o jeito foi deletar o repositório original e criar outro, que no caso, é esse.
 
-Se quiser atualizações do projeto com mais frequência, vai no mem perfil do [TabNews](https://www.tabnews.com.br/ViniciusDaniel404/).
+Se quiser atualizações do projeto com mais frequência, vai no meu perfil do [TabNews](https://www.tabnews.com.br/ViniciusDaniel404/).
