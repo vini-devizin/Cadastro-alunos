@@ -4,6 +4,7 @@ from dotenv import load_dotenv # Importing library load_dotenv for more security
 import os # Importing library os to acess the .env
 from datetime import date # importing date from datetime to register the birth of the student
 import re # Importing re to verify names of tables
+from tabulate import tabulate # importing tabulate to write the table
 
 load_dotenv(dotenv_path='../../.env') # Load the .env in his directory
 
@@ -92,7 +93,7 @@ def create_table(name: str) -> None:
         CREATE TABLE IF NOT EXISTS {} (
         id SERIAL PRIMARY KEY,
         nome VARCHAR(255) NOT NULL,
-        nasc DATE NOT NULL,
+        nascimento DATE NOT NULL,
         cpf VARCHAR(11) NOT NULL UNIQUE
         ); 
 """).format(sql.Identifier(name)) # I'm using sql.Identifier to protect from sql injection
@@ -118,7 +119,7 @@ def add_student(name: str, birth: date, cpf: str, table: str) -> None:
     try:
         con = connect()
         cursor = con.cursor()
-        query = f"INSERT INTO {table} (nome, nasc, cpf) VALUES (%s, %s, %s);"
+        query = f"INSERT INTO {table} (nome, nascimento, cpf) VALUES (%s, %s, %s);"
         cursor.execute(query, (name, birth, cpf))
         con.commit()
     except:
@@ -130,6 +131,11 @@ def add_student(name: str, birth: date, cpf: str, table: str) -> None:
         con.close()
 
 def remove_student(id: int, table: str) -> None:
+    """
+    -> remove a student using the id
+    :param id: Id of student that will be removed
+    :param table: The table that the student is registered
+    """
     try:
         con = connect()
         cursor = con.cursor()
@@ -145,6 +151,13 @@ def remove_student(id: int, table: str) -> None:
         con.close()
 
 def update_student(id: int, value, column: str, table: str) -> None:
+    """
+    -> Update a student data
+    :param id: Student's id
+    :param value: The new value
+    :param column: Column that will be the value changed
+    :param table: The table that the student is registered
+    """
     try:
         con = connect()
         cursor = con.cursor()
@@ -163,6 +176,23 @@ def update_student(id: int, value, column: str, table: str) -> None:
         cursor.close()
         con.close()
 
-if __name__ == '__main__':
-    # create_table('test1') # I'm using this to debug, but i will remove this
-    update_student(1, '987654', 'cpf', 'teste')
+def show_students(table: str) -> None:
+    """
+    -> Show the students registered in the table
+    :param table: Table that will show the registers
+    """
+    try:
+        con = connect()
+        cursor = con.cursor()
+        query = sql.SQL("SELECT * FROM {};").format(sql.Identifier(table))
+        cursor.execute(query)
+        data = cursor.fetchall()
+        columns = [desc[0] for desc in cursor.description]
+        print(tabulate(data, headers=columns, tablefmt="psql"))
+    except:
+        print('\033[0;31mERRO: Falha ao exibir alunos cadastrados!\033[0m')
+    finally:
+        cursor.close()
+        con.close()
+
+# if __name__ == '__main__':

@@ -5,6 +5,7 @@ options: list[str] = [ # The options of user
     'Cadastrar novo aluno',
     'Remover aluno',
     'Exibir alunos cadastrados',
+    'Buscar aluno',
     'Sair do sistema'
 ]
 showMenu(options)
