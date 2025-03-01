@@ -2,6 +2,8 @@ import psycopg2 as ps # Importing psycopg2 for databases manipulation
 from psycopg2 import sql
 from dotenv import load_dotenv # Importing library load_dotenv for more security
 import os # Importing library os for acess the .env
+from datetime import date # importing date from datetime for register the birth of the student
+import re
 
 load_dotenv(dotenv_path='../../.env') # Load the .env in his directory
 
@@ -12,6 +14,7 @@ data = { # The credentials of database
     'host': os.getenv("DB_HOST"),
     'port': os.getenv("DB_PORT")
 }
+
 
 def connect():
     """
@@ -54,10 +57,21 @@ def create_database() -> None:
             print('\033[0;32mBanco de dados criado!')
         else:
             print('\033[0;32mBanco de dados já existente!\033[0m')
-        cursor.close()
-        con.close()
     except:
         print('\033[0;31mErro: Falha ao criar banco de dados\033[0m')
+    finally:
+        cursor.close()
+        con.close()
+
+def verify_table(table: str) -> bool:
+    """
+    -> Verify if the name of table isn't a try of sql injection
+    :param table: The name that be verified in this function
+    :return: If the name of table is secure
+    """
+    if re.match(r'^[A-Za-z0-9_]+$', table):
+        return True
+    return False
 
 def create_table(name: str) -> None:
     """
@@ -78,11 +92,36 @@ def create_table(name: str) -> None:
 """).format(sql.Identifier(name)) # I'm using sql.Identifier to protect from sql injection
         cursor.execute(query)
         con.commit()
-        cursor.close()
-        con.close()
+        
         print(f'\033[0;32mTabela criada com sucesso!\033[0m')
     except:
         print(f'\033[0;31mERRO: Falha ao criar tabela\033[0m')
+    finally:
+        cursor.close()
+        con.close()
 
-if __name__ == '__main__':
-    create_table('test1') # I using this to debug, but i will remove this
+def add_student(name: str, birth: date, cpf: str, table: str) -> None:
+    """
+    -> add a student to the table
+    :param name: Student's name
+    :param birth: Student's birth date
+    :param cpf: Student's cpf
+    :param table: The table that will be added this data
+    :return: None
+    """
+    try:
+        con = connect()
+        cursor = con.cursor()
+        query = f"INSERT INTO {table} (nome, nasc, cpf) VALUES (%s, %s, %s)"
+        cursor.execute(query, (name, birth, cpf))
+        con.commit()
+    except:
+        print('\033[0;31mERRO: Falha ao cadastrar aluno!\033[0m')
+    else:
+        print(f'\033[0;32mAluno {name} cadastrado com sucesso\033[0m')
+    finally:
+        cursor.close()
+        con.close()
+
+# if __name__ == '__main__':
+    # create_table('test1') # I'm using this to debug, but i will remove this
