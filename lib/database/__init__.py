@@ -1,9 +1,9 @@
 import psycopg2 as ps # Importing psycopg2 for databases manipulation
-from psycopg2 import sql
+from psycopg2 import sql # Importing module sql from psycopg2 to protect from sql injection
 from dotenv import load_dotenv # Importing library load_dotenv for more security
-import os # Importing library os for acess the .env
-from datetime import date # importing date from datetime for register the birth of the student
-import re
+import os # Importing library os to acess the .env
+from datetime import date # importing date from datetime to register the birth of the student
+import re # Importing re to verify names of tables
 
 load_dotenv(dotenv_path='../../.env') # Load the .env in his directory
 
@@ -14,7 +14,6 @@ data = { # The credentials of database
     'host': os.getenv("DB_HOST"),
     'port': os.getenv("DB_PORT")
 }
-
 
 def connect():
     """
@@ -54,7 +53,7 @@ def create_database() -> None:
         exist = cursor.fetchone()
         if not exist:
             cursor.execute(f'CREATE DATABASE {data["name"]}')
-            print('\033[0;32mBanco de dados criado!')
+            print('\033[0;32mBanco de dados criado!\033[0m')
         else:
             print('\033[0;32mBanco de dados já existente!\033[0m')
     except:
