@@ -144,6 +144,25 @@ def remove_student(id: int, table: str) -> None:
         cursor.close()
         con.close()
 
+def update_student(id: int, value, column: str, table: str) -> None:
+    try:
+        con = connect()
+        cursor = con.cursor()
+        query = sql.SQL("""
+        UPDATE {}
+        SET {} = %s 
+        WHERE id = %s;
+    """).format(sql.Identifier(table), sql.Identifier(column))
+        cursor.execute(query, (value, id))
+        con.commit()
+    except Exception as e:
+        print(f'\033[0;31mERRO: Falha ao atualizar aluno com id {id}!\033[0m', e)
+    else:
+        print(f'\033[0;32mDados do aluno com id {id} atualizados com sucesso!\033[0m')
+    finally:
+        cursor.close()
+        con.close()
+
 if __name__ == '__main__':
     # create_table('test1') # I'm using this to debug, but i will remove this
-    create_table('teste')
+    update_student(1, '987654', 'cpf', 'teste')
