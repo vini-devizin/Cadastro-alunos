@@ -52,6 +52,13 @@ def create_database() -> None:
         cursor.execute(f"SELECT 1 FROM pg_database WHERE datname = '{data['name']}';")
         exist = cursor.fetchone()
         if not exist:
+            query = f"""
+            CREATE DATABASE {data['name']} 
+            WITH ENCODING 'UTF8'
+            LC_COLLATE 'pt_BR.UTF-8'
+            LC_CTYPE 'pt_BR.UTF-8'
+            TEMPLATE template0
+            """
             cursor.execute(f'CREATE DATABASE {data["name"]}')
             print('\033[0;32mBanco de dados criado!\033[0m')
         else:
@@ -93,8 +100,8 @@ def create_table(name: str) -> None:
         con.commit()
         
         print(f'\033[0;32mTabela criada com sucesso!\033[0m')
-    except:
-        print(f'\033[0;31mERRO: Falha ao criar tabela\033[0m')
+    except Exception as e:
+        print(f'\033[0;31mERRO: Falha ao criar tabela\033[0m', e)
     finally:
         cursor.close()
         con.close()
@@ -111,7 +118,7 @@ def add_student(name: str, birth: date, cpf: str, table: str) -> None:
     try:
         con = connect()
         cursor = con.cursor()
-        query = f"INSERT INTO {table} (nome, nasc, cpf) VALUES (%s, %s, %s)"
+        query = f"INSERT INTO {table} (nome, nasc, cpf) VALUES (%s, %s, %s);"
         cursor.execute(query, (name, birth, cpf))
         con.commit()
     except:
@@ -126,7 +133,7 @@ def remove_student(id: int, table: str) -> None:
     try:
         con = connect()
         cursor = con.cursor()
-        query = f"DELETE from {table} WHERE id = %s"
+        query = f"DELETE from {table} WHERE id = %s;"
         cursor.execute(query, (id, ))
         con.commit()
     except:
@@ -137,5 +144,6 @@ def remove_student(id: int, table: str) -> None:
         cursor.close()
         con.close()
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
     # create_table('test1') # I'm using this to debug, but i will remove this
+    create_table('teste')
