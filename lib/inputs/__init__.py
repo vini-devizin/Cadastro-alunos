@@ -1,4 +1,6 @@
-from datetime import date
+from datetime import date # Importing date from datetime to use in validate_date
+import re # Importing re to verify names of tables
+
 def readInt(txt: str) -> int:
     """
     -> Read a int
@@ -30,7 +32,7 @@ def read_name(txt: str) -> str:
             elif len(name) > 255:
                 print('\033[0;31mErro: Nome grande demais! Abrevie ou faça outra coisa\033[0m')
             else:
-                return name
+                return name.title()
 
 def read_sex(txt: str) -> str:
     """
@@ -136,3 +138,38 @@ def define_edu(grade: int) -> str:
     else:
         edu = 'Fundamental 2'
     return edu
+
+def read_email(txt: str) -> str:
+    """
+    -> Read and verify a email
+    :param txt: Text that will be used to ask or require user
+    :return: Verified email
+    """
+    while True:
+        try:
+            email = str(input(txt))
+        except (TypeError, ValueError):
+            print('\033[0;31mERRO: Digite o seu email!\033[0m')
+        else:
+            if re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email):
+                return email
+            else:
+                print('\033[0;31mERRO: Email inválido!\033[0m') 
+
+def confirmation() -> str:
+    """
+    -> Ask if the user really wants to do that
+    :param txt: Text that will be used to ask or require to user
+    :return: If the user want or not
+    """
+    try:
+        confirm = str(input('Você realmente quer fazer isso? [S/N] ')).strip().upper()[0]
+    except (ValueError, TypeError):
+        print(f'\033[0;31mERRO: Resposta inválida!\033[0m')
+    else:
+        if confirm == 'S':
+            return True
+        elif confirm == 'N':
+            return False
+        else:
+            print('\033[0;31mERRO: Digite apenas S ou N!\033[0m')

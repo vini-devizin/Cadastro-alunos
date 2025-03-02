@@ -3,7 +3,6 @@ from psycopg2 import sql # Importing module sql from psycopg2 to protect from sq
 from dotenv import load_dotenv # Importing library load_dotenv for more security
 import os # Importing library os to acess the .env
 from datetime import date # importing date from datetime to register the birth of the student
-import re # Importing re to verify names of tables
 from tabulate import tabulate # importing tabulate to write the table
 
 load_dotenv(dotenv_path='../../.env') # Load the .env in his directory
@@ -70,16 +69,6 @@ def create_database() -> None:
         cursor.close()
         con.close()
 
-def verify_table(table: str) -> bool:
-    """
-    -> Verify if the name of table isn't a try of sql injection
-    :param table: The name that be verified in this function
-    :return: If the name of table is secure
-    """
-    if re.match(r'^[A-Za-z0-9_]+$', table):
-        return True
-    return False
-
 def create_table(name: str) -> None:
     """
     -> Create table if not exists
@@ -96,6 +85,7 @@ def create_table(name: str) -> None:
         sexo CHAR(1) CHECK (sexo IN ('M', 'F')),
         nascimento DATE NOT NULL,
         cpf VARCHAR(11) NOT NULL UNIQUE,
+        email varchar(100) NOT NULL UNIQUE,
         ensino VARCHAR(13) NOT NULL,
         serie SMALLINT NOT NULL,
         adicionado DATE DEFAULT CURRENT_DATE
@@ -111,7 +101,7 @@ def create_table(name: str) -> None:
         cursor.close()
         con.close()
 
-def add_student(name: str, sex: str, birth: date, cpf: str, edu: str, grade: str, table: str) -> None:
+def add_student(name: str, sex: str, birth: date, cpf: str, email: str, edu: str, grade: str, table: str) -> None:
     """
     -> add a student to the table
     :param name: Student's name
@@ -125,11 +115,11 @@ def add_student(name: str, sex: str, birth: date, cpf: str, edu: str, grade: str
     try:
         con = connect()
         cursor = con.cursor()
-        query = sql.SQL("INSERT INTO {} (nome, sexo, nascimento, cpf, ensino, serie) VALUES (%s, %s, %s, %s, %s, %s);").format(sql.Identifier(table))
-        cursor.execute(query, (name, sex, birth, cpf, edu, grade))
+        query = sql.SQL("INSERT INTO {} (nome, sexo, nascimento, cpf, email, ensino, serie) VALUES (%s, %s, %s, %s, %s, %s, %s);").format(sql.Identifier(table))
+        cursor.execute(query, (name, sex, birth, cpf, email, edu, grade))
         con.commit()
-    except:
-        print('\033[0;31mERRO: Falha ao cadastrar aluno!\033[0m')
+    except Exception as e:
+        print('\033[0;31mERRO: Falha ao cadastrar aluno!\033[0m', e)
     else:
         print(f'\033[0;32mAluno {name} cadastrado com sucesso\033[0m')
     finally:
@@ -220,3 +210,13 @@ def search_student(id: int, table: str) -> None:
     finally:
         cursor.close()
         con.close()
+
+def greater_id(table: str) -> None:
+    con = connect()
+    cursor = con.cursor()
+    query = sql.SQL("SELECT MAX(id) FROM {};").format(sql.Identifier(table))
+    cursor.execute(query)
+    greater_id = cursor.fetchone()[0]
+    if greater_id is None:
+        greater_id = 0
+    return greater_id

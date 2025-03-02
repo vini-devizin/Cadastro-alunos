@@ -18,14 +18,14 @@ def header(txt: str) -> None:
     print(f'{txt.center(40)}')
     print(line())
 
-def showMenu(opts: list[str]):
+def showMenu(opts: list[str]) -> str:
     """
     -> Show the menu
     :param opts: A list of options that the user will chose one
     :return: The option that the user chose
     """
     header('MENU PRINCIṔAL')
-    for i, v in enumerate(opts):
+    for i, v in enumerate(opts):        
         print(f'\033[0;34m{i+1} \033[0;33m- {v}\033[0m')
-    ask: int = readInt('Qual opção escolhe: ')
+    ask = readInt('Qual opção você deseja: ')
     return ask
