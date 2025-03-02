@@ -93,34 +93,40 @@ def create_table(name: str) -> None:
         CREATE TABLE IF NOT EXISTS {} (
         id SERIAL PRIMARY KEY,
         nome VARCHAR(255) NOT NULL,
+        sexo CHAR(1) CHECK (sexo IN ('M', 'F')),
         nascimento DATE NOT NULL,
-        cpf VARCHAR(11) NOT NULL UNIQUE
+        cpf VARCHAR(11) NOT NULL UNIQUE,
+        ensino VARCHAR(13) NOT NULL,
+        serie SMALLINT NOT NULL,
+        adicionado DATE DEFAULT CURRENT_DATE
         ); 
 """).format(sql.Identifier(name)) # I'm using sql.Identifier to protect from sql injection
         cursor.execute(query)
         con.commit()
         
         print(f'\033[0;32mTabela criada com sucesso!\033[0m')
-    except Exception as e:
-        print(f'\033[0;31mERRO: Falha ao criar tabela\033[0m', e)
+    except:
+        print(f'\033[0;31mERRO: Falha ao criar tabela\033[0m')
     finally:
         cursor.close()
         con.close()
 
-def add_student(name: str, birth: date, cpf: str, table: str) -> None:
+def add_student(name: str, sex: str, birth: date, cpf: str, edu: str, grade: str, table: str) -> None:
     """
     -> add a student to the table
     :param name: Student's name
     :param birth: Student's birth date
     :param cpf: Student's cpf
+    :param edu: Student's education
+    :param grade: Student's grade
     :param table: The table that will be added this data
     :return: None
     """
     try:
         con = connect()
         cursor = con.cursor()
-        query = sql.SQL("INSERT INTO {} (nome, nascimento, cpf) VALUES (%s, %s, %s);").format(sql.Identifier(table))
-        cursor.execute(query, (name, birth, cpf))
+        query = sql.SQL("INSERT INTO {} (nome, sexo, nascimento, cpf, ensino, serie) VALUES (%s, %s, %s, %s, %s, %s);").format(sql.Identifier(table))
+        cursor.execute(query, (name, sex, birth, cpf, edu, grade))
         con.commit()
     except:
         print('\033[0;31mERRO: Falha ao cadastrar aluno!\033[0m')
