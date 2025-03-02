@@ -119,7 +119,7 @@ def add_student(name: str, birth: date, cpf: str, table: str) -> None:
     try:
         con = connect()
         cursor = con.cursor()
-        query = f"INSERT INTO {table} (nome, nascimento, cpf) VALUES (%s, %s, %s);"
+        query = sql.SQL("INSERT INTO {} (nome, nascimento, cpf) VALUES (%s, %s, %s);").format(sql.Identifier(table))
         cursor.execute(query, (name, birth, cpf))
         con.commit()
     except:
@@ -139,7 +139,7 @@ def remove_student(id: int, table: str) -> None:
     try:
         con = connect()
         cursor = con.cursor()
-        query = f"DELETE from {table} WHERE id = %s;"
+        query = sql.SQL("DELETE from {} WHERE id = %s;").format(sql.Identifier(table))
         cursor.execute(query, (id, ))
         con.commit()
     except:
@@ -187,12 +187,30 @@ def show_students(table: str) -> None:
         query = sql.SQL("SELECT * FROM {};").format(sql.Identifier(table))
         cursor.execute(query)
         data = cursor.fetchall()
-        columns = [desc[0] for desc in cursor.description]
-        print(tabulate(data, headers=columns, tablefmt="psql"))
+        colunms = [desc[0] for desc in cursor.description]
+        print(tabulate(data, headers=colunms, tablefmt="psql"))
     except:
         print('\033[0;31mERRO: Falha ao exibir alunos cadastrados!\033[0m')
     finally:
         cursor.close()
         con.close()
 
-# if __name__ == '__main__':
+def search_student(id: int, table: str) -> None:
+    """
+    -> Search student by id
+    :param id: Student's id
+    :table: Table that will be searched the student
+    """
+    try:
+        con = connect()
+        cursor = con.cursor()
+        query = sql.SQL("SELECT * FROM {} WHERE id = %s;").format(sql.Identifier(table))
+        cursor.execute(query, (id, ))
+        data = cursor.fetchall()
+        colunms = [desc[0] for desc in cursor.description]
+        print(tabulate(data, headers=colunms, tablefmt="psql"))
+    except:
+        print(f'\033[0;31mERRO: Falha ao buscar aluno com id {id}!\033[0m')
+    finally:
+        cursor.close()
+        con.close()
