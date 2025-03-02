@@ -22,6 +22,7 @@ while True:
     sleep(1)
     if res == 1:
         system('clear')
+        header(options[0])
         name = read_name('Nome: (máximo de 255 caracteres) ')
         sex = read_sex('Sexo: [M/F] ')
         born = read_date('Data de nascimento: ')
@@ -34,6 +35,7 @@ while True:
         sleep(1)
     elif res == 2:
         system('clear')
+        header(options[1])
         columns = ('nome', 'sexo', 'nascimento', 'cpf', 'email', 'ensino', 'serie')
         while True:
             try:
@@ -56,6 +58,7 @@ while True:
                         break
     elif res == 3:
         system('clear')
+        header(options[2])
         while True:
             id = readInt('Qual o id do aluno que deseja remover: ')
             if id > greater_id('alunos'):
@@ -71,11 +74,13 @@ while True:
                     break
     elif res == 4:
         system('clear')
+        header(options[3])
         sleep(1)
         show_students('alunos')
         stop = str(input('Pressione Enter para continuar '))
     elif res == 5:
         system('clear')
+        header(options[4])
         id = readInt('Qual o id do aluno que deseja buscar: ')
         if id > greater_id('alunos'):
             print('\033[0;31mERRO: Id digitado é maior que o maior id registrado!\033[0m')

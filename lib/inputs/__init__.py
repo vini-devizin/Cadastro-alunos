@@ -132,7 +132,7 @@ def define_edu(grade: int) -> str:
                 if edu in ('Fundamental 1', 'Médio'):
                     break
                 else:
-                    print(f'\033[0;31mErro: digite "Fundamental 1" ou "Médio"')
+                    print(f'\033[0;31mErro: digite "Fundamental 1" ou "Médio"\033[0m')
     elif grade > 3 and grade < 5:
         edu = 'Fundamental 1'
     else:
