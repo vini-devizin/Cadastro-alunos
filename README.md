@@ -1,38 +1,50 @@
-# Estou de volta!
+# Cadastro de alunos v1
 
-Faz um tempo que eu não apareço aqui no GitHub, mas eu estava fazendo exercicios de Python lá no Google Colab.
+Após muito código, estudo e sofriemnto, finalmente acabei a 1° versão do cadastro de alunos
 
-Eu já comecei a aprender POO e decidi fazer esse projetinho para praticar coisas que já aprendi.
+## Pré-requisitos
 
-Qualquer problema(issue) ou sugestão de implementação(pull request) eu estarei dando uma olhada(talvez demore para eu ver, mas em algum momento eu vejo).
+- Python e pip instalados(Para instalar use: `sudo apt install python3 python3-pip`)
+- Postgresql(Para instalar use: `sudo apt install python3 python3-pip`)
 
-Eu pretendo implementar o uso de banco de dados nesse projeto, mas não tão cedo.
+## Passo a passo para executar o projeto
 
-# 23/02/2025
+1. Escolha um diretório para clonar o projeto com: `cd caminho/para/o/seu/diretório`
+2. Clone o repositório com: `git clone https://github.com/vini-devizin/Cadastro-alunos.git`
+3. Instale as dependências com: `pip install -r requirements.txt`
 
-Fiquei uns dias sem mexer no projeto porque eu estava estudando e vendo formas de implementar postgresql.
+- Caso aconteça igual aconteceu comigo, não conseguiu instalar as dependências, tente com um ambiente virtual(venv):
 
-Implementar isso não foi tão difćil, mas aconteceu algumas coisas, como:
+``` bash
+sudo apt install python3-venv
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+deactivate
+```
 
-- Tive um problema com OS(Debian 12), pois aparentemente ele não teve compatibilidade com a biblioteca.(Se alguém mais experiente estiver lendo isso, poderia me ajudar a entender isso? Porque o que eu falei, foi o que eu entendi, mas não sei se isso está correto)
-- Para resolver o problema anterior, eu criei um venv, e tentei, mas deu um erro. Então, eu perguntei pro ChatGpt(Eu tive que usar ele porque eu não consegui entender o traceback) e ele me disse que eu teria que instalar mais dois pacotes(libpq-dev e python3-dev).
+4. Crie um usuário postgres com:
 
-Obs: Quando eu avançar mais o projeto, irei fazer um passo a passo de como roda-lo.
+``` bash
+sudo -i -u postgres
+psql
+CREATE USER seu_usuario WITH
+PASSWORD 'sua_senha'
+SUPERUSER
+CREATEDB
+CREATEROLE
+REPLICATION
+BYPASSRLS;
+```
 
-Depois de dar o push entre 12:00 e 13:00, eu continuei codando e fui implementar a conexão do banco de dados. Sendo bem sincero, quando eu estava criando um usuário para usar, não estava dando certo porque eu não coloquei ponto e vírgula, e passei muito tempo quebrando cabeça com isso.
+5. Crie um arquivo .env com:
 
-No momento que estou escrevendo agora, o commit mais recente é `verification added`.
+``` .env
+DB_NAME=nome_do_seu_banco
+DB_USER=seu_usuario_postgres
+DB_PASSWORD=sua_senha
+DB_HOST=seu_host
+DB_PORT=sua_porta
+```
 
-# 24/02/2025
-
-Hoje não tive tanto tempo para o projeto, mas só hoje que eu percebi que o .env e o venv estavam disponiveis, ou seja, minhas credenciais do banco de dados ficaram expostas por um dia inteiro🤡, e o venv não é necessário ele no repositório remoto(minha opinião).
-
-# 28/02/2025
-
-Olá, fiquei 4 dias sem dar atualizações aqui no GitHub porque estava tentando retirar do histórico o .env, que tinha as credenciais do banco de dados, mas o jeito foi deletar o repositório original e criar outro, que no caso, é esse.
-
-Se quiser atualizações do projeto com mais frequência, vai no meu perfil do [TabNews](https://www.tabnews.com.br/ViniciusDaniel404/).
-
-# 01/03/2025
-
-Hoje implementei a verificação do nome de tabelas, para caso alguém tente fazer um sql injection, e as features de adicionar, remover, atualizar e exibir alunos nessas tabelas.
+6. Rode o projeto com: `python3 main.py`
